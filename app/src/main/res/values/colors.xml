@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="main_color">#87314e</color>
+    <color name="second_color">#512645</color>
+    <color name="info_color">#E71D36</color>
+    <color name="text_color">#FF000000</color>
+
+    <color name="violet">#BC00FF</color>
+    <color name="black">#FF000000</color>
+    <color name="blue">#304FEE</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="gray">#4CFFFFFF</color>
+    <color name="powder">#FF6363</color>
+    <color name="pale_powder">#FFABAB</color>
+    <color name="ultramarine">#3319C7</color>
+</resources>
