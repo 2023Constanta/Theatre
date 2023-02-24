@@ -1,10 +1,9 @@
 package com.example.theatre.features.spectacles.presentation.ui.detail
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import by.kirich1409.viewbindingdelegate.viewBinding
 import com.bumptech.glide.Glide
 import com.example.theatre.R
 import com.example.theatre.core.domain.model.common.performance.Performance
@@ -12,8 +11,8 @@ import com.example.theatre.core.presentation.ext.EMPTY
 import com.example.theatre.core.presentation.ext.deleteHTML
 import com.example.theatre.core.presentation.model.ContentResultState
 import com.example.theatre.core.presentation.model.handleContents
-import com.example.theatre.databinding.FragmentEventDescriptionBinding
-import com.example.theatre.features.spectacles.presentation.ui.detail.SpectacleDetailsFragment.Companion.event_id
+import com.example.theatre.databinding.FragmentDetailCommonArghBinding
+import com.example.theatre.features.spectacles.presentation.ui.detail.SpectacleFragment.Companion.event_id
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 /**
@@ -22,31 +21,24 @@ import org.koin.androidx.viewmodel.ext.android.sharedViewModel
  * @author Tamerlan Mamukhov
  */
 
-class SpectacleDetailsDescriptionFragment : Fragment() {
+class SpectacleDetailFragment : Fragment(R.layout.fragment_detail_common_argh) {
 
     companion object {
         const val DESCRIPTION_TAB = 0
         const val INFO = "Информация"
-        fun newInstance(): SpectacleDetailsDescriptionFragment {
-            return SpectacleDetailsDescriptionFragment()
+        fun newInstance(): SpectacleDetailFragment {
+            return SpectacleDetailFragment()
         }
     }
 
-    private lateinit var binding: FragmentEventDescriptionBinding
-    private val spectacleViewModel by sharedViewModel<SpectacleDetailsViewModel>()
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_event_description, container, false)
-    }
+    private val binding: FragmentDetailCommonArghBinding by viewBinding(
+        FragmentDetailCommonArghBinding::bind
+    )
+    private val spectacleViewModel by sharedViewModel<SpectacleViewModel>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding = FragmentEventDescriptionBinding.bind(view)
         arguments?.run { spectacleViewModel.getSpectacleDetails(getInt(event_id)) }
         spectacleViewModel.spectacleDetailLoaded.observe(viewLifecycleOwner, ::handleInfo)
     }

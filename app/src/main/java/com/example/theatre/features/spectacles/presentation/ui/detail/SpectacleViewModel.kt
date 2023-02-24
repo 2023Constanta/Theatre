@@ -11,7 +11,7 @@ import com.example.theatre.features.spectacles.domain.usecases.GetPerformanceUse
  *
  * @constructor Create empty Spectacle details view model
  */
-class SpectacleDetailsViewModel(
+class SpectacleViewModel(
     private val getPerformanceUseCase: GetPerformanceUseCase
 ) : ViewModel() {
     private val _spectacleDetailLoaded = MutableLiveData<ContentResultState>()

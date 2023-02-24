@@ -12,20 +12,24 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.theatre.R
 import com.example.theatre.databinding.ActivityMainBinding
-import com.example.theatre.features.info.presentation.ui.detail.person.PersonDetailViewModel
-import com.example.theatre.features.info.presentation.ui.detail.theatre.TheatreDetailViewModel
-import com.example.theatre.features.poster.presentation.ui.detail.PosterDetailsViewModel
-import com.example.theatre.features.spectacles.presentation.ui.detail.SpectacleDetailsViewModel
+import com.example.theatre.features.favourite.presentation.ui.detail.FavouriteViewModel
+import com.example.theatre.features.favourite.presentation.ui.list.FavouriteListViewModel
+import com.example.theatre.features.info.presentation.ui.detail.person.PersonViewModel
+import com.example.theatre.features.info.presentation.ui.detail.theatre.TheatreViewModel
+import com.example.theatre.features.poster.presentation.ui.detail.PosterViewModel
+import com.example.theatre.features.spectacles.presentation.ui.detail.SpectacleViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityMainBinding
-    private val spectacleViewModel by viewModel<SpectacleDetailsViewModel>()
-    private val theatreViewModel by viewModel<TheatreDetailViewModel>()
-    private val personViewModel by viewModel<PersonDetailViewModel>()
-    private val posterDetailsViewModel by viewModel<PosterDetailsViewModel>()
+    private val spectacleViewModel by viewModel<SpectacleViewModel>()
+    private val theatreViewModel by viewModel<TheatreViewModel>()
+    private val personViewModel by viewModel<PersonViewModel>()
+    private val posterViewModel by viewModel<PosterViewModel>()
+    private val favouriteViewModel by viewModel<FavouriteViewModel>()
+    private val favouritesListViewModel by viewModel<FavouriteListViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

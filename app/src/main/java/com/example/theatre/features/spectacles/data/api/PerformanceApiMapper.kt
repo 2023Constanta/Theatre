@@ -25,4 +25,7 @@ class PerformanceApiMapper(private val performanceApi: PerformanceApi) {
 
     suspend fun getCityName(slug: String): PerformancePlaceLocation =
         performanceApi.getCityName(slug).toPerformancePlaceLocation()
+
+    suspend fun getPerformancesByQuery(query: String): List<Performance> =
+        performanceApi.getPerformancesByQuery(query).data.map { it.toPerformance() }
 }

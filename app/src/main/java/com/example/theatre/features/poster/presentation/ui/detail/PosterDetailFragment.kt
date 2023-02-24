@@ -1,110 +1,66 @@
 package com.example.theatre.features.poster.presentation.ui.detail
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import by.kirich1409.viewbindingdelegate.viewBinding
 import com.bumptech.glide.Glide
+import com.example.theatre.R
 import com.example.theatre.core.presentation.ext.EMPTY
+import com.example.theatre.core.presentation.ext.deleteHTML
 import com.example.theatre.core.presentation.model.ContentResultState
 import com.example.theatre.core.presentation.model.handleContents
-import com.example.theatre.core.presentation.model.refreshPage
-import com.example.theatre.core.presentation.ui.ViewBindingFragment
-import com.example.theatre.databinding.FragmentPosterDetailBinding
+import com.example.theatre.databinding.FragmentPosterDescriptionBinding
 import com.example.theatre.features.poster.domain.model.PosterDetails
-import com.example.theatre.features.poster.presentation.adapters.PosterDetailsViewPagerAdapter
-import com.google.android.material.tabs.TabLayoutMediator
+import com.example.theatre.features.poster.presentation.ui.detail.PosterFragment.Companion.poster_id
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
-
 /**
- * Фрагмент деталей афиши
- *
+ * Фрагмент описания афиши
  * @author Tamerlan Mamukhov on 2022-05-28
  */
-class PosterDetailFragment : ViewBindingFragment<FragmentPosterDetailBinding>() {
-    private lateinit var adapter: PosterDetailsViewPagerAdapter
-    private lateinit var fragmentsList: ArrayList<Fragment>
+class PosterDetailFragment : Fragment(R.layout.fragment_poster_description) {
+    private val viewModel by sharedViewModel<PosterViewModel>()
 
-    private val viewModel by sharedViewModel<PosterDetailsViewModel>()
 
-    override val initBinding: (inflater: LayoutInflater, container: ViewGroup?, attachToRoot: Boolean) -> FragmentPosterDetailBinding
-        get() = FragmentPosterDetailBinding::inflate
+    private val binding: FragmentPosterDescriptionBinding by viewBinding(
+        FragmentPosterDescriptionBinding::bind
+    )
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        fragmentsList = arrayListOf(
-            PosterDescriptionFragment(),
-            PosterReviewFragment()
-        )
-
-        adapter = PosterDetailsViewPagerAdapter(
-            fragmentsList,
-            requireActivity().supportFragmentManager,
-            lifecycle
-        )
-
-        with(nonNullBinding) {
-            content.viewPager.adapter = adapter
-            TabLayoutMediator(content.tabs, content.viewPager) { tabs, position ->
-                tabs.text = getTitle(position)
-            }.attach()
-        }
-
         arguments?.run { viewModel.getPoster(getInt(poster_id)) }
-
-        viewModel.posterDetailedLoaded.observe(viewLifecycleOwner, ::handlePoster)
+        viewModel.posterDetailedLoaded.observe(viewLifecycleOwner, ::handlePosterDetails)
     }
 
-
-    private fun handlePoster(contentResultState: ContentResultState) {
-        contentResultState.refreshPage(
-            viewToShow = nonNullBinding.detailsContent,
-            progressBar = nonNullBinding.progressBar2, onStateSuccess = {
-                setDetails(it as PosterDetails)
-            }
+    private fun handlePosterDetails(contentResultState: ContentResultState) =
+        contentResultState.handleContents(
+            onStateSuccess = { setDetails(it as PosterDetails) },
+            onStateError = {}
         )
 
-    }
-
-    private fun setDetails(posterDetails: PosterDetails) {
-
-        with(nonNullBinding.content) {
+    private fun setDetails(posterDetails: PosterDetails) =
+        with(binding) {
             with(posterDetails) {
-                textName.text =
-                    posterDetails.shortTitle.orEmpty().replaceFirstChar { it.uppercaseChar() }
 
-                val imageURL = images?.first()?.imageURL.orEmpty()
-
+                val imageURL =
+                    if (this.images?.isNotEmpty() == true) images.first().imageURL.orEmpty() else String.EMPTY
                 if (imageURL.isNotEmpty()) {
                     context?.let {
                         Glide
                             .with(it)
                             .load(imageURL)
                             .into(imageThumbnail)
-
-                        Glide
-                            .with(it)
-                            .load(imageURL)
-                            .into(nonNullBinding.imageLarge)
                     }
 
                 }
+
+                textName.text = title.replaceFirstChar { it.uppercaseChar() }
+                textDescription.text = description.orEmpty().deleteHTML()
+                textTagline.text = tagline
+                textBody.text = bodyText.orEmpty().deleteHTML()
+
             }
         }
-    }
-
-    private fun getTitle(position: Int) = when (position) {
-        0 -> "Информация"
-        1 -> "Детали"
-        else -> "Некст"
-    }
-
-    companion object {
-        const val poster_id = "poster_id"
-    }
-
 
 }

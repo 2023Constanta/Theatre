@@ -18,9 +18,16 @@ import com.example.theatre.features.spectacles.domain.repository.PerformanceRepo
 class PerformanceRepositoryImpl(
     private val performanceApiMapper: PerformanceApiMapper
 ) : PerformanceRepository {
-    override suspend fun getPerformances(): List<Performance> = performanceApiMapper.getPerformances()
-    override suspend fun getPerformanceById(id: Int): Performance = performanceApiMapper.getPerformanceById(id)
+    override suspend fun getPerformances(): List<Performance> =
+        performanceApiMapper.getPerformances()
+
+    override suspend fun getPerformancesByQuery(query: String): List<Performance> =
+        performanceApiMapper.getPerformancesByQuery(query)
+
+    override suspend fun getPerformanceById(id: Int): Performance =
+        performanceApiMapper.getPerformanceById(id)
 
     override suspend fun getPlace(id: Int): PerformancePlace = performanceApiMapper.getPlaceById(id)
-    override suspend fun getCityName(slug: String): PerformancePlaceLocation = performanceApiMapper.getCityName(slug)
+    override suspend fun getCityName(slug: String): PerformancePlaceLocation =
+        performanceApiMapper.getCityName(slug)
 }

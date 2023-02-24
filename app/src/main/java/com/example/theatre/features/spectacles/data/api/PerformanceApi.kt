@@ -17,6 +17,7 @@ import com.example.theatre.features.Constants.PARTICIPANTS
 import com.example.theatre.features.Constants.PLACE
 import com.example.theatre.features.Constants.PRICE
 import com.example.theatre.features.Constants.PUBLICATION_DATE
+import com.example.theatre.features.Constants.QUERY
 import com.example.theatre.features.Constants.SHORT_TITLE
 import com.example.theatre.features.Constants.SITE_URL
 import com.example.theatre.features.Constants.SLUG
@@ -28,6 +29,7 @@ import com.example.theatre.features.spectacles.data.api.model.PerformancePlaceLo
 import com.example.theatre.features.spectacles.data.api.model.PerformancePlaceModel
 import retrofit2.http.GET
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 /**
  * Performance api - запрос списка постановок
@@ -54,4 +56,7 @@ interface PerformanceApi {
 
     @GET("locations/{$SLUG}/")
     suspend fun getCityName(@Path(SLUG) slug: String): PerformancePlaceLocationModel
+
+    @GET("search/?")
+    suspend fun getPerformancesByQuery(@Query(QUERY) query: String): ItemsListResultModel<PerformanceModel>
 }

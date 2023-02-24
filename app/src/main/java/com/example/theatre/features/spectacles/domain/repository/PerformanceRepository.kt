@@ -12,6 +12,7 @@ import com.example.theatre.core.domain.model.common.performance.PerformancePlace
 
 interface PerformanceRepository {
     suspend fun getPerformances(): List<Performance>
+    suspend fun getPerformancesByQuery(query: String): List<Performance>
     suspend fun getPerformanceById(id: Int): Performance
 
     /**

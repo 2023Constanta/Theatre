@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.theatre.R
 import com.example.theatre.core.domain.model.common.performance.Performance
 import com.example.theatre.core.domain.model.common.performance.PerformancePlace
@@ -14,8 +15,8 @@ import com.example.theatre.core.presentation.ext.EMPTY
 import com.example.theatre.core.presentation.ext.toListOfActorsInPerformance
 import com.example.theatre.core.presentation.model.ContentResultState
 import com.example.theatre.core.presentation.model.handleContents
-import com.example.theatre.databinding.FragmentReviewBinding
-import com.example.theatre.features.spectacles.presentation.ui.detail.SpectacleDetailsFragment.Companion.event_id
+import com.example.theatre.databinding.FragmentInfoCommonArghBinding
+import com.example.theatre.features.spectacles.presentation.ui.detail.SpectacleFragment.Companion.event_id
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
@@ -25,18 +26,10 @@ import org.koin.androidx.viewmodel.ext.android.sharedViewModel
  * @author Tamerlan Mamukhov
  */
 
-class SpectacleReviewFragment : Fragment() {
+class SpectacleInfoFragment : Fragment(R.layout.fragment_info_common_argh) {
 
-    companion object {
-        const val DETAILS_TAB = 1
-        const val DETAILS = "Детали"
-        fun newInstance(): SpectacleReviewFragment {
-            return SpectacleReviewFragment()
-        }
-    }
-
-    private lateinit var binding: FragmentReviewBinding
-    private val spectacleViewModel by sharedViewModel<SpectacleDetailsViewModel>()
+    private val binding: FragmentInfoCommonArghBinding by viewBinding(FragmentInfoCommonArghBinding::bind)
+    private val spectacleViewModel by sharedViewModel<SpectacleViewModel>()
     private val dateFormatter by inject<PerformanceDateFormatter>()
     private lateinit var cityName: String
     private lateinit var gaps: String
@@ -46,13 +39,12 @@ class SpectacleReviewFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        return inflater.inflate(R.layout.fragment_review, container, false)
+        return inflater.inflate(R.layout.fragment_info_common_argh, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding = FragmentReviewBinding.bind(view)
         gaps = getString(R.string.gaps)
         with(spectacleViewModel) {
             arguments?.run { getSpectacleDetails(getInt(event_id)) }
