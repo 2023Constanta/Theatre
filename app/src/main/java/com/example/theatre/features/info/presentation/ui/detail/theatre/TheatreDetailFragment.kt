@@ -1,71 +1,63 @@
-package com.example.theatre.features.info.presentation.ui.detail.person
+package com.example.theatre.features.info.presentation.ui.detail.theatre
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import by.kirich1409.viewbindingdelegate.viewBinding
 import com.bumptech.glide.Glide
 import com.example.theatre.R
 import com.example.theatre.core.presentation.ext.EMPTY
 import com.example.theatre.core.presentation.ext.deleteHTML
 import com.example.theatre.core.presentation.model.ContentResultState
 import com.example.theatre.core.presentation.model.handleContents
-import com.example.theatre.databinding.FragmentEventDescriptionBinding
-import com.example.theatre.core.domain.model.common.agent.Agent
+import com.example.theatre.databinding.FragmentDetailCommonArghBinding
+import com.example.theatre.features.info.domain.model.theatre.Theatre
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 /**
- * Фрагмент с подробностями об актере
+ * Фрагмент с подробностями о театре
  *
  * @author Tamerlan Mamukhov
  */
 
-class PersonDescriptionFragment : Fragment() {
+class TheatreDetailFragment : Fragment(R.layout.fragment_detail_common_argh) {
 
     companion object {
         const val DESCRIPTION_TAB = 0
         const val INFO = "Информация"
-        const val person_id = "id"
-        fun newInstance(): PersonDescriptionFragment {
-            return PersonDescriptionFragment()
+        const val theatre_id = "id"
+        fun newInstance(): TheatreDetailFragment {
+            return TheatreDetailFragment()
         }
     }
 
-    private lateinit var binding: FragmentEventDescriptionBinding
-    private val personViewModel by sharedViewModel<PersonDetailViewModel>()
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View {
-        return inflater.inflate(R.layout.fragment_event_description, container, false)
-    }
+    private val binding: FragmentDetailCommonArghBinding by viewBinding(
+        FragmentDetailCommonArghBinding::bind
+    )
+    private val theatreViewModel by sharedViewModel<TheatreViewModel>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        binding = FragmentEventDescriptionBinding.bind(view)
-        arguments?.run { personViewModel.getPersonById(getInt(person_id)) }
-        personViewModel.personDetails.observe(viewLifecycleOwner, ::handleInfo)
+        arguments?.run { theatreViewModel.getTheatreById(getInt(theatre_id)) }
+        theatreViewModel.theatreDetailsContent.observe(viewLifecycleOwner, ::handleContent)
     }
 
 
-    private fun handleInfo(contentResultState: ContentResultState) {
+    private fun handleContent(contentResultState: ContentResultState) =
+
         contentResultState.handleContents(
             onStateSuccess = {
-                setDetails(it as Agent)
+                setDetails(it as Theatre)
             },
             onStateError = {
                 // TODO: Добавить обработку ошибки (например сообщение)
             }
         )
-    }
 
-    private fun setDetails(personDetails: Agent) {
+
+    private fun setDetails(theatreDetails: Theatre) {
         with(binding) {
-            with(personDetails) {
+            with(theatreDetails) {
                 val imageURL =
                     if (images?.isNotEmpty() == true) images.first().imageURL.orEmpty() else String.EMPTY
                 if (imageURL.isNotEmpty()) {
@@ -76,7 +68,7 @@ class PersonDescriptionFragment : Fragment() {
                             .into(imageThumbnail)
                     }
                 }
-                textName.text = title
+                textName.text = title.replaceFirstChar { it.uppercaseChar() }
                 textDescription.text = description.orEmpty().deleteHTML().trimEnd()
                 textBody.text = bodyText.orEmpty().deleteHTML().trimEnd()
                 textTagline.visibility = View.GONE

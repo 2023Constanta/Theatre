@@ -1,72 +1,55 @@
-package com.example.theatre.features.info.presentation.ui.detail.theatre
+package com.example.theatre.features.info.presentation.ui.detail.person
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import by.kirich1409.viewbindingdelegate.viewBinding
 import com.bumptech.glide.Glide
 import com.example.theatre.R
+import com.example.theatre.core.domain.model.common.agent.Agent
 import com.example.theatre.core.presentation.ext.EMPTY
 import com.example.theatre.core.presentation.ext.deleteHTML
 import com.example.theatre.core.presentation.model.ContentResultState
 import com.example.theatre.core.presentation.model.handleContents
-import com.example.theatre.databinding.FragmentEventDescriptionBinding
-import com.example.theatre.features.info.domain.model.theatre.Theatre
+import com.example.theatre.databinding.FragmentDetailCommonArghBinding
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 /**
- * Фрагмент с подробностями о театре
+ * Фрагмент с подробностями об актере
  *
  * @author Tamerlan Mamukhov
  */
 
-class TheatreDescriptionFragment : Fragment() {
+class PersonDetailFragment : Fragment(R.layout.fragment_detail_common_argh) {
 
-    companion object {
-        const val DESCRIPTION_TAB = 0
-        const val INFO = "Информация"
-        const val theatre_id = "id"
-        fun newInstance(): TheatreDescriptionFragment {
-            return TheatreDescriptionFragment()
-        }
-    }
+    private val binding: FragmentDetailCommonArghBinding by viewBinding(
+        FragmentDetailCommonArghBinding::bind
+    )
 
-    private lateinit var binding: FragmentEventDescriptionBinding
-    private val theatreViewModel by sharedViewModel<TheatreDetailViewModel>()
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View {
-        return inflater.inflate(R.layout.fragment_event_description, container, false)
-    }
+    private val personViewModel by sharedViewModel<PersonViewModel>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding = FragmentEventDescriptionBinding.bind(view)
-        arguments?.run { theatreViewModel.getTheatreById(getInt(theatre_id)) }
-        theatreViewModel.theatreDetailsContent.observe(viewLifecycleOwner, ::handleContent)
+        arguments?.run { personViewModel.getPersonById(getInt(person_id)) }
+        personViewModel.personDetails.observe(viewLifecycleOwner, ::handleInfo)
     }
 
 
-    private fun handleContent(contentResultState: ContentResultState) =
-
+    private fun handleInfo(contentResultState: ContentResultState) {
         contentResultState.handleContents(
             onStateSuccess = {
-                setDetails(it as Theatre)
+                setDetails(it as Agent)
             },
             onStateError = {
                 // TODO: Добавить обработку ошибки (например сообщение)
             }
         )
+    }
 
-
-    private fun setDetails(theatreDetails: Theatre) {
+    private fun setDetails(personDetails: Agent) {
         with(binding) {
-            with(theatreDetails) {
+            with(personDetails) {
                 val imageURL =
                     if (images?.isNotEmpty() == true) images.first().imageURL.orEmpty() else String.EMPTY
                 if (imageURL.isNotEmpty()) {
@@ -77,11 +60,15 @@ class TheatreDescriptionFragment : Fragment() {
                             .into(imageThumbnail)
                     }
                 }
-                textName.text = title.replaceFirstChar { it.uppercaseChar() }
+                textName.text = title
                 textDescription.text = description.orEmpty().deleteHTML().trimEnd()
                 textBody.text = bodyText.orEmpty().deleteHTML().trimEnd()
                 textTagline.visibility = View.GONE
             }
         }
+    }
+
+    companion object {
+        const val person_id = "id"
     }
 }

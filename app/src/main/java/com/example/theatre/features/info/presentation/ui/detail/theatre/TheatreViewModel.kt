@@ -12,7 +12,7 @@ import com.example.theatre.core.presentation.model.ContentResultState
  * @author Tamerlan Mamukhov
  */
 
-class TheatreDetailViewModel(
+class TheatreViewModel(
     private val getTheatreUseCase: GetTheatreUseCase
 ) : ViewModel() {
     private val _theatreDetailsContent = MutableLiveData<ContentResultState>()

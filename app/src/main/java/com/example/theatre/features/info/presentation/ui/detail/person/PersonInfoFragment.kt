@@ -1,16 +1,15 @@
 package com.example.theatre.features.info.presentation.ui.detail.person
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.theatre.R
-import com.example.theatre.core.presentation.model.ContentResultState
-import com.example.theatre.core.presentation.model.handleContents
-import com.example.theatre.databinding.FragmentReviewBinding
 import com.example.theatre.core.domain.model.common.agent.Agent
 import com.example.theatre.core.presentation.ext.toListOfPerformances
+import com.example.theatre.core.presentation.model.ContentResultState
+import com.example.theatre.core.presentation.model.handleContents
+import com.example.theatre.databinding.FragmentInfoCommonArghBinding
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 /**
@@ -19,32 +18,24 @@ import org.koin.androidx.viewmodel.ext.android.sharedViewModel
  * @author Tamerlan Mamukhov
  */
 
-class PersonReviewFragment : Fragment() {
+class PersonInfoFragment : Fragment(R.layout.fragment_info_common_argh) {
 
     companion object {
         const val DETAILS_TAB = 1
         const val DETAILS = "Детали"
         const val person_id = "id"
-        fun newInstance(): PersonReviewFragment {
-            return PersonReviewFragment()
+        fun newInstance(): PersonInfoFragment {
+            return PersonInfoFragment()
         }
     }
 
-    private lateinit var binding: FragmentReviewBinding
-    private val personViewModel by sharedViewModel<PersonDetailViewModel>()
+    private val binding: FragmentInfoCommonArghBinding by viewBinding(FragmentInfoCommonArghBinding::bind)
+    private val personViewModel by sharedViewModel<PersonViewModel>()
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View {
-        return inflater.inflate(R.layout.fragment_review, container, false)
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding = FragmentReviewBinding.bind(view)
         arguments?.run { personViewModel.getPersonById(getInt(person_id)) }
         personViewModel.personDetails.observe(viewLifecycleOwner, ::handleInfo)
     }

@@ -1,14 +1,13 @@
 package com.example.theatre.features.info.presentation.ui.detail.theatre
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.theatre.R
 import com.example.theatre.core.presentation.model.ContentResultState
 import com.example.theatre.core.presentation.model.handleContents
-import com.example.theatre.databinding.FragmentReviewBinding
+import com.example.theatre.databinding.FragmentInfoCommonArghBinding
 import com.example.theatre.features.info.domain.model.theatre.Theatre
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
@@ -18,32 +17,23 @@ import org.koin.androidx.viewmodel.ext.android.sharedViewModel
  * @author Tamerlan Mamukhov
  */
 
-class TheatreReviewFragment : Fragment() {
+class TheatreInfoFragment : Fragment(R.layout.fragment_info_common_argh) {
 
     companion object {
         const val DETAILS_TAB = 1
         const val DETAILS = "Детали"
         const val theatre_id = "id"
-        fun newInstance(): TheatreReviewFragment {
-            return TheatreReviewFragment()
+        fun newInstance(): TheatreInfoFragment {
+            return TheatreInfoFragment()
         }
     }
 
-    private lateinit var binding: FragmentReviewBinding
-    private val theatreViewModel by sharedViewModel<TheatreDetailViewModel>()
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View {
-        return inflater.inflate(R.layout.fragment_review, container, false)
-    }
+    private val binding: FragmentInfoCommonArghBinding by viewBinding(FragmentInfoCommonArghBinding::bind)
+    private val theatreViewModel by sharedViewModel<TheatreViewModel>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding = FragmentReviewBinding.bind(view)
         arguments?.run { theatreViewModel.getTheatreById(getInt(theatre_id)) }
         theatreViewModel.theatreDetailsContent.observe(viewLifecycleOwner, ::handleContent)
     }

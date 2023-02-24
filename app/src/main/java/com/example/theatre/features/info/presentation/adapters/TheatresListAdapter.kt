@@ -21,9 +21,14 @@ import com.example.theatre.features.info.domain.model.theatre.Theatre
  */
 
 class TheatresListAdapter(
-    private val theatres: MutableList<Theatre>,
     private val onItemClicked: (id: Int) -> Unit,
 ) : RecyclerView.Adapter<TheatresListAdapter.ViewHolder>() {
+
+    var theatres: MutableList<Theatre> = mutableListOf()
+        set(value) {
+            field.clear()
+            field.addAll(value)
+        }
 
     class ViewHolder(val binding: ItemTheatreBinding) :
         RecyclerView.ViewHolder(binding.root)
@@ -62,11 +67,4 @@ class TheatresListAdapter(
 
     override fun getItemCount(): Int = theatres.size
 
-    fun setTheatres(theatreList: List<Theatre>) {
-        if (theatreList.isNotEmpty()) {
-            theatres.clear()
-            theatres.addAll(theatreList)
-            notifyDataSetChanged()
-        }
-    }
 }
