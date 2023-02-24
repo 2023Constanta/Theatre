@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".presentasion.ui.detail.EventFragment"
-    tools:showIn="@layout/fragment_event">
+    tools:showIn="@layout/fragment_detail_common">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -97,7 +97,7 @@
             app:layout_constraintRight_toRightOf="@id/card_main"
             app:layout_constraintTop_toBottomOf="@id/text_name" />
 
-        <androidx.viewpager.widget.ViewPager
+        <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/view_pager"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -129,7 +129,6 @@
                 android:id="@+id/tabs"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:setupWithViewPager="@{viewPager}"
                 app:tabBackground="@drawable/tab_color_selector"
                 app:tabGravity="fill"
                 app:tabIndicatorColor="@color/second_color"

@@ -21,7 +21,11 @@
         android:id="@+id/favourite"
         android:name="com.example.theatre.features.favourite.presentation.ui.list.FavoritesListFragment"
         android:label="@string/favourite"
-        tools:layout="@layout/fragment_favorite" />
+        tools:layout="@layout/fragment_favorite" >
+        <action
+            android:id="@+id/action_favourite_to_favouriteFragment"
+            app:destination="@id/favouriteFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/performance"
@@ -55,8 +59,8 @@
     </fragment>
     <fragment
         android:id="@+id/eventFragment"
-        android:name="com.example.theatre.features.spectacles.presentation.ui.detail.SpectacleDetailsFragment"
-        android:label="string/frag_event_det">
+        android:name="com.example.theatre.features.spectacles.presentation.ui.detail.SpectacleFragment"
+        android:label="@string/frag_event_det">
         <action
             android:id="@+id/action_eventFragment_to_eventDescriptionFragment"
             app:destination="@id/eventDescriptionFragment" />
@@ -70,7 +74,7 @@
     </fragment>
     <fragment
         android:id="@+id/eventDescriptionFragment"
-        android:name="com.example.theatre.features.spectacles.presentation.ui.detail.SpectacleDetailsDescriptionFragment"
+        android:name="com.example.theatre.features.spectacles.presentation.ui.detail.SpectacleDetailFragment"
         android:label="EventDescriptionFragment" >
         <argument
             android:name="id"
@@ -79,7 +83,7 @@
     </fragment>
     <fragment
         android:id="@+id/reviewFragment"
-        android:name="com.example.theatre.features.spectacles.presentation.ui.detail.SpectacleReviewFragment"
+        android:name="com.example.theatre.features.spectacles.presentation.ui.detail.SpectacleInfoFragment"
         android:label="ReviewFragment" >
         <argument
             android:name="id"
@@ -123,7 +127,7 @@
     </fragment>
     <fragment
         android:id="@+id/theatreDescriptionFragment"
-        android:name="com.example.theatre.features.info.presentation.ui.detail.theatre.TheatreDescriptionFragment"
+        android:name="com.example.theatre.features.info.presentation.ui.detail.theatre.TheatreDetailFragment"
         android:label="TheatreDescriptionFragment" >
         <argument
             android:name="id"
@@ -132,7 +136,7 @@
     </fragment>
     <fragment
         android:id="@+id/theatreReviewFragment"
-        android:name="com.example.theatre.features.info.presentation.ui.detail.theatre.TheatreReviewFragment"
+        android:name="com.example.theatre.features.info.presentation.ui.detail.theatre.TheatreInfoFragment"
         android:label="TheatreReviewFragment" >
         <argument
             android:name="id"
@@ -156,7 +160,7 @@
     </fragment>
     <fragment
         android:id="@+id/personDescriptionFragment"
-        android:name="com.example.theatre.features.info.presentation.ui.detail.person.PersonDescriptionFragment"
+        android:name="com.example.theatre.features.info.presentation.ui.detail.person.PersonDetailFragment"
         android:label="PersonDescriptionFragment" >
         <argument
             android:name="id"
@@ -165,7 +169,7 @@
     </fragment>
     <fragment
         android:id="@+id/personReviewFragment"
-        android:name="com.example.theatre.features.info.presentation.ui.detail.person.PersonReviewFragment"
+        android:name="com.example.theatre.features.info.presentation.ui.detail.person.PersonInfoFragment"
         android:label="PersonReviewFragment" >
         <argument
             android:name="id"
@@ -174,7 +178,7 @@
     </fragment>
     <fragment
         android:id="@+id/posterDetailFragment"
-        android:name="com.example.theatre.features.poster.presentation.ui.detail.PosterDetailFragment"
+        android:name="com.example.theatre.features.poster.presentation.ui.detail.PosterFragment"
         android:label="@string/home"
         tools:layout="@layout/fragment_poster_detail">
         <argument
@@ -190,7 +194,7 @@
     </fragment>
     <fragment
         android:id="@+id/posterDescriptionFragment"
-        android:name="com.example.theatre.features.poster.presentation.ui.detail.PosterDescriptionFragment"
+        android:name="com.example.theatre.features.poster.presentation.ui.detail.PosterDetailFragment"
         android:label="fragment_poster_description"
         tools:layout="@layout/fragment_poster_description" >
         <argument
@@ -202,9 +206,18 @@
 
     <fragment
         android:id="@+id/posterReviewFragment"
-        android:name="com.example.theatre.features.poster.presentation.ui.detail.PosterReviewFragment"
+        android:name="com.example.theatre.features.poster.presentation.ui.detail.PosterInfoFragment"
         android:label="fragment_poster_review"
         tools:layout="@layout/fragment_poster_review" >
+        <argument
+            android:name="id"
+            app:argType="integer"
+            android:defaultValue="-1" />
+    </fragment>
+    <fragment
+        android:id="@+id/favouriteFragment"
+        android:name="com.example.theatre.features.favourite.presentation.ui.detail.FavouriteFragment"
+        android:label="FavouriteFragment" >
         <argument
             android:name="id"
             app:argType="integer"

@@ -8,4 +8,10 @@
         android:icon="@drawable/ic_local_play_white_24dp"
         android:title="@string/action_tickets"
         app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/action_add_fav"
+        android:icon="@drawable/theater"
+        android:title="@string/action_fav"
+        app:showAsAction="ifRoom" />
 </menu>

@@ -70,4 +70,15 @@
     <string name="theme_choice">Выбор темы</string>
     <string name="refresh">Refresh</string>
     <string name="hint_search">Search</string>
+    <string name="action_fav">Добавить в избранное</string>
+
+    <string-array name="details_info">
+        <item>Детали</item>
+        <item>Инфо</item>
+    </string-array>
+
+    <string-array name="theaters_persons">
+        <item>Театры</item>
+        <item>Персоны</item>
+    </string-array>
 </resources>

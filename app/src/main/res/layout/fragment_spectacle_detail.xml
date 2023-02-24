@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipChildren="false"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appbar"
@@ -43,7 +43,7 @@
 
         <include
             android:id="@+id/content"
-            layout="@layout/content_event" />
+            layout="@layout/layout_detail_common" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
