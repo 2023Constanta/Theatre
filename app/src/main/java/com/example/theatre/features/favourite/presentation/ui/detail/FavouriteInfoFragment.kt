@@ -13,7 +13,7 @@ import com.example.theatre.core.presentation.ext.EMPTY
 import com.example.theatre.core.presentation.model.ContentResultState
 import com.example.theatre.core.presentation.model.handleContents
 import com.example.theatre.databinding.FragmentInfoCommonArghBinding
-import com.example.theatre.features.favourite.presentation.ui.detail.FavouriteFragment.Companion.fav_id
+import com.example.theatre.features.Constants.BundleConstants.BUNDlE_KEY_FAVOURITE
 import com.example.theatre.features.spectacles.presentation.ui.detail.SpectacleViewModel
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
@@ -40,7 +40,7 @@ class FavouriteInfoFragment : Fragment(R.layout.fragment_info_common_argh) {
 
         gaps = getString(R.string.gaps)
         arguments?.run {
-            favouriteViewModel.getFavouritesById(getInt(fav_id))
+            favouriteViewModel.getFavouritesById(getInt(BUNDlE_KEY_FAVOURITE))
         }
 
         favouriteViewModel.favouriteContent.observe(viewLifecycleOwner, ::handleSpecDetails)

@@ -12,6 +12,7 @@ import com.example.theatre.core.domain.model.common.agent.Agent
 import com.example.theatre.core.presentation.model.ContentResultState
 import com.example.theatre.core.presentation.model.refreshPage
 import com.example.theatre.databinding.FragmentPersonsBinding
+import com.example.theatre.features.Constants.BundleConstants.BUNDlE_KEY_PERSON
 import com.example.theatre.features.info.presentation.adapters.PersonsListAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -23,14 +24,6 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PersonsListFragment : Fragment(R.layout.fragment_persons) {
 
-    companion object {
-        const val DETAILS_TAB = 1
-        const val PERSON = "Персона"
-        fun newInstance(): PersonsListFragment {
-            return PersonsListFragment()
-        }
-    }
-
     private val binding: FragmentPersonsBinding by viewBinding(FragmentPersonsBinding::bind)
     private lateinit var personsAdapter: PersonsListAdapter
     private val personsViewModel by viewModel<PersonsListViewModel>()
@@ -38,7 +31,7 @@ class PersonsListFragment : Fragment(R.layout.fragment_persons) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initObservers()
-        personsViewModel.init()
+        personsViewModel.getPersons()
         prepareAdapter()
     }
 
@@ -55,24 +48,23 @@ class PersonsListFragment : Fragment(R.layout.fragment_persons) {
         personsViewModel.personLoaded.observe(viewLifecycleOwner, ::handlePersons)
 
 
-    private fun handlePersons(contentResultState: ContentResultState) {
-        contentResultState.refreshPage(
-            viewToShow = binding.listPersons,
-            progressBar = binding.progressBar4,
-            onStateSuccess = {
-                personsAdapter.persons = ((it as List<Agent>).toMutableList())
-            }
-        )
-    }
+    private fun handlePersons(contentResultState: ContentResultState) =
+        with(binding) {
+            contentResultState.refreshPage(
+                viewToShow = listPersons,
+                progressBar = progressBar4,
+                onStateSuccess = {
+                    personsAdapter.persons = ((it as List<Agent>).toMutableList())
+                },
+                errorLayout = errorLayout,
+                tryAgainAction = { tryAgain() }
+            )
+        }
 
-    private fun tryAgain() {
-        binding?.errorLayout?.root?.visibility = View.INVISIBLE
-        personsViewModel.init()
-        initObservers()
-    }
+    private fun tryAgain() = personsViewModel.getPersons()
 
     private fun onPersonClick(id: Int) {
         requireActivity().findNavController(R.id.navHostFragment)
-            .navigate(R.id.action_info_to_personFragment, bundleOf("id" to id))
+            .navigate(R.id.action_info_to_personFragment, bundleOf(BUNDlE_KEY_PERSON to id))
     }
 }

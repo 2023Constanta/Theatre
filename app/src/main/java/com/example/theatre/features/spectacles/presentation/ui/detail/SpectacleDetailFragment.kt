@@ -12,7 +12,7 @@ import com.example.theatre.core.presentation.ext.deleteHTML
 import com.example.theatre.core.presentation.model.ContentResultState
 import com.example.theatre.core.presentation.model.handleContents
 import com.example.theatre.databinding.FragmentDetailCommonArghBinding
-import com.example.theatre.features.spectacles.presentation.ui.detail.SpectacleFragment.Companion.event_id
+import com.example.theatre.features.Constants.BundleConstants.BUNDlE_KEY_PERFORMANCE
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 /**
@@ -23,14 +23,6 @@ import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class SpectacleDetailFragment : Fragment(R.layout.fragment_detail_common_argh) {
 
-    companion object {
-        const val DESCRIPTION_TAB = 0
-        const val INFO = "Информация"
-        fun newInstance(): SpectacleDetailFragment {
-            return SpectacleDetailFragment()
-        }
-    }
-
     private val binding: FragmentDetailCommonArghBinding by viewBinding(
         FragmentDetailCommonArghBinding::bind
     )
@@ -39,7 +31,7 @@ class SpectacleDetailFragment : Fragment(R.layout.fragment_detail_common_argh) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        arguments?.run { spectacleViewModel.getSpectacleDetails(getInt(event_id)) }
+        arguments?.run { spectacleViewModel.getSpectacleDetails(getInt(BUNDlE_KEY_PERFORMANCE)) }
         spectacleViewModel.spectacleDetailLoaded.observe(viewLifecycleOwner, ::handleInfo)
     }
 

@@ -11,17 +11,15 @@ import com.example.theatre.features.info.domain.usecases.GetPersonUseCase
  *
  * @author Tamerlan Mamukhov
  */
-
 class PersonsListViewModel(
     private val getPersonUseCase: GetPersonUseCase
 ) : ViewModel() {
     private val _personLoaded = MutableLiveData<ContentResultState>()
     val personLoaded get() = _personLoaded
 
-    fun init() =
-        viewModelCall(
-            call = { getPersonUseCase.getPerson() },
-            contentResultState = _personLoaded
-        )
+    fun getPersons() = viewModelCall(
+        call = { getPersonUseCase.getPerson() },
+        contentResultState = _personLoaded
+    )
 
 }

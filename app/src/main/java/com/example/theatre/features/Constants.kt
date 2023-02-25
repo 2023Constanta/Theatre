@@ -39,4 +39,12 @@ object Constants {
     const val PLACE_ID = "place_id"
     const val AGENT_ID = "agent_id"
     const val QUERY = "q"
+
+    object BundleConstants {
+        const val BUNDlE_KEY_PERFORMANCE = "perf_id"
+        const val BUNDlE_KEY_FAVOURITE = "fav_id"
+        const val BUNDlE_KEY_PERSON = "person_id"
+        const val BUNDlE_KEY_THEATRE = "theatre_id"
+        const val BUNDlE_KEY_POSTER = "poster_id"
+    }
 }

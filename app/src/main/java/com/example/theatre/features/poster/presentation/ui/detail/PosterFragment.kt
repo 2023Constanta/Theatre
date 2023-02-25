@@ -11,6 +11,7 @@ import com.example.theatre.core.presentation.model.refreshPage
 import com.example.theatre.core.presentation.viewpager.NewPagerAdapter
 import com.example.theatre.core.presentation.viewpager.prepareAdapter
 import com.example.theatre.databinding.FragmentPosterDetailBinding
+import com.example.theatre.features.Constants.BundleConstants.BUNDlE_KEY_POSTER
 import com.example.theatre.features.poster.domain.model.PosterDetails
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
@@ -27,7 +28,6 @@ class PosterFragment : Fragment(R.layout.fragment_poster_detail) {
     private lateinit var fragmentsList: ArrayList<Fragment>
 
     private val viewModel by sharedViewModel<PosterViewModel>()
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -49,7 +49,7 @@ class PosterFragment : Fragment(R.layout.fragment_poster_detail) {
             )
         }
 
-        arguments?.run { viewModel.getPoster(getInt(poster_id)) }
+        arguments?.run { viewModel.getPoster(getInt(BUNDlE_KEY_POSTER)) }
 
         viewModel.posterDetailedLoaded.observe(viewLifecycleOwner, ::handlePoster)
     }
@@ -60,12 +60,9 @@ class PosterFragment : Fragment(R.layout.fragment_poster_detail) {
             contentResultState.refreshPage(
                 viewToShow = detailsContent,
                 progressBar = progressBar2,
-                onStateSuccess = {
-                    setDetails(it as PosterDetails)
-                }
+                onStateSuccess = { setDetails(it as PosterDetails) }
             )
         }
-
 
     private fun setDetails(posterDetails: PosterDetails) {
 
@@ -93,10 +90,5 @@ class PosterFragment : Fragment(R.layout.fragment_poster_detail) {
             }
         }
     }
-
-    companion object {
-        const val poster_id = "poster_id"
-    }
-
 
 }

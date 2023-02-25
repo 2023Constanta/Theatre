@@ -13,6 +13,7 @@ import com.example.theatre.core.presentation.model.refreshPage
 import com.example.theatre.core.presentation.viewpager.NewPagerAdapter
 import com.example.theatre.core.presentation.viewpager.prepareAdapter
 import com.example.theatre.databinding.FragmentFavouriteDetailBinding
+import com.example.theatre.features.Constants.BundleConstants.BUNDlE_KEY_FAVOURITE
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 /**
@@ -31,7 +32,7 @@ class FavouriteFragment : Fragment(R.layout.fragment_favourite_detail) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         arguments?.run {
-            favouriteViewModel.getFavouritesById(getInt(fav_id))
+            favouriteViewModel.getFavouritesById(getInt(BUNDlE_KEY_FAVOURITE))
         }
 
         prepareViewPager()
@@ -89,7 +90,4 @@ class FavouriteFragment : Fragment(R.layout.fragment_favourite_detail) {
         }
     }
 
-    companion object {
-        const val fav_id = "fav_id"
-    }
 }

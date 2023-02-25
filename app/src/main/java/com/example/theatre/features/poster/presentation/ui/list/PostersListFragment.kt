@@ -11,6 +11,7 @@ import com.example.theatre.R
 import com.example.theatre.core.presentation.model.ContentResultState
 import com.example.theatre.core.presentation.model.refreshPage
 import com.example.theatre.databinding.FragmentPosterBinding
+import com.example.theatre.features.Constants.BundleConstants.BUNDlE_KEY_POSTER
 import com.example.theatre.features.poster.domain.model.PosterBriefItem
 import com.example.theatre.features.poster.presentation.adapters.PosterBriefItemAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -29,43 +30,43 @@ class PostersListFragment : Fragment(R.layout.fragment_poster) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        prepareAdapter()
         initObservers()
         viewModel.getPosters()
-        prepareAdapter()
     }
 
     private fun onItemClicked(id: Int) =
         findNavController()
-            .navigate(R.id.action_home_to_posterDetailFragment, bundleOf("poster_id" to id))
+            .navigate(R.id.action_home_to_posterDetailFragment, bundleOf(BUNDlE_KEY_POSTER to id))
 
-    private fun prepareAdapter() {
-        binding.rvPosters.layoutManager =
+    private fun prepareAdapter() = with(binding) {
+
+        rvPosters.layoutManager =
             LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
 
         adapter = PosterBriefItemAdapter { id: Int ->
             onItemClicked(id)
         }
+        rvPosters.adapter = adapter
     }
 
     private fun initObservers() {
         viewModel.postersBrief.observe(viewLifecycleOwner, ::handlePosters)
     }
 
-
     private fun handlePosters(contentResultState: ContentResultState) =
         with(binding) {
             contentResultState.refreshPage(
                 onStateSuccess = {
                     adapter.setData(it as List<PosterBriefItem>)
-                    rvPosters.adapter = adapter
                 },
-                tryAgainAction = {
-
-                },
+                tryAgainAction = { tryAgain() },
                 viewToShow = rvPosters,
                 progressBar = progressBar,
                 errorLayout = errorLayout
             )
 
         }
+
+    private fun tryAgain() = viewModel.getPosters()
 }

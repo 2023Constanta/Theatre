@@ -16,6 +16,7 @@ import com.example.theatre.core.presentation.model.refreshPage
 import com.example.theatre.core.presentation.viewpager.NewPagerAdapter
 import com.example.theatre.core.presentation.viewpager.prepareAdapter
 import com.example.theatre.databinding.FragmentDetailCommonBinding
+import com.example.theatre.features.Constants.BundleConstants.BUNDlE_KEY_PERSON
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 /**
@@ -24,10 +25,6 @@ import org.koin.androidx.viewmodel.ext.android.sharedViewModel
  * @author Tamerlan Mamukhov
  */
 class PersonFragment : Fragment(R.layout.fragment_detail_common) {
-
-    companion object {
-        const val person_id = "id"
-    }
 
     private val binding: FragmentDetailCommonBinding by viewBinding(FragmentDetailCommonBinding::bind)
     private val personViewModel by sharedViewModel<PersonViewModel>()
@@ -38,7 +35,7 @@ class PersonFragment : Fragment(R.layout.fragment_detail_common) {
         setHasOptionsMenu(true)
         requireActivity().actionBar?.setDisplayHomeAsUpEnabled(true)
 
-        arguments?.run { personViewModel.getPersonById(getInt(person_id)) }
+        arguments?.run { personViewModel.getPersonById(getInt(BUNDlE_KEY_PERSON)) }
         prepareViewPager()
         personViewModel.personDetails.observe(viewLifecycleOwner, ::handleInfo)
     }
@@ -57,14 +54,13 @@ class PersonFragment : Fragment(R.layout.fragment_detail_common) {
     }
 
     private fun handleInfo(contentResultState: ContentResultState) =
-        contentResultState.refreshPage(
-            viewToShow = binding.contentDetailzz,
-            progressBar = binding.progressBar6,
-            onStateSuccess = {
-                setDetails(it as Agent)
-            }
-
-        )
+        with(binding) {
+            contentResultState.refreshPage(
+                viewToShow = contentDetails,
+                progressBar = progressBar,
+                onStateSuccess = { setDetails(it as Agent) }
+            )
+        }
 
     private fun setDetails(personDetails: Agent) {
         with(binding.content) {
@@ -92,7 +88,8 @@ class PersonFragment : Fragment(R.layout.fragment_detail_common) {
 
     override fun onOptionsItemSelected(menuItem: MenuItem): Boolean {
         when (menuItem.itemId) {
-            android.R.id.home -> requireActivity().findNavController(R.id.navHostFragment).popBackStack()
+            android.R.id.home -> requireActivity().findNavController(R.id.navHostFragment)
+                .popBackStack()
         }
         return super.onOptionsItemSelected(menuItem)
     }

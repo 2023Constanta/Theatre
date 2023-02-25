@@ -12,6 +12,7 @@ import com.example.theatre.core.presentation.ext.deleteHTML
 import com.example.theatre.core.presentation.model.ContentResultState
 import com.example.theatre.core.presentation.model.handleContents
 import com.example.theatre.databinding.FragmentDetailCommonArghBinding
+import com.example.theatre.features.Constants.BundleConstants.BUNDlE_KEY_PERSON
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 /**
@@ -31,7 +32,7 @@ class PersonDetailFragment : Fragment(R.layout.fragment_detail_common_argh) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        arguments?.run { personViewModel.getPersonById(getInt(person_id)) }
+        arguments?.run { personViewModel.getPersonById(getInt(BUNDlE_KEY_PERSON)) }
         personViewModel.personDetails.observe(viewLifecycleOwner, ::handleInfo)
     }
 
@@ -66,9 +67,5 @@ class PersonDetailFragment : Fragment(R.layout.fragment_detail_common_argh) {
                 textTagline.visibility = View.GONE
             }
         }
-    }
-
-    companion object {
-        const val person_id = "id"
     }
 }

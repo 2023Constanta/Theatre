@@ -19,7 +19,8 @@ import com.example.theatre.core.presentation.model.ContentResultState
 import com.example.theatre.core.presentation.model.refreshPage
 import com.example.theatre.core.presentation.viewpager.NewPagerAdapter
 import com.example.theatre.core.presentation.viewpager.prepareAdapter
-import com.example.theatre.databinding.FragmentSpectacleDetailBinding
+import com.example.theatre.databinding.FragmentDetailCommonBinding
+import com.example.theatre.features.Constants.BundleConstants.BUNDlE_KEY_PERFORMANCE
 import com.example.theatre.features.favourite.presentation.ui.detail.FavouriteViewModel
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
@@ -28,16 +29,12 @@ import org.koin.androidx.viewmodel.ext.android.sharedViewModel
  *
  * @author Tamerlan Mamukhov
  */
-class SpectacleFragment : Fragment(R.layout.fragment_spectacle_detail) {
-
-    companion object {
-        const val event_id = "id"
-    }
+class SpectacleFragment : Fragment(R.layout.fragment_detail_common) {
 
     private var specId = 0
     private lateinit var perToSave: Performance
-    private val binding: FragmentSpectacleDetailBinding by viewBinding(
-        FragmentSpectacleDetailBinding::bind
+    private val binding: FragmentDetailCommonBinding by viewBinding(
+        FragmentDetailCommonBinding::bind
     )
 
     private val spectacleViewModel by sharedViewModel<SpectacleViewModel>()
@@ -52,8 +49,8 @@ class SpectacleFragment : Fragment(R.layout.fragment_spectacle_detail) {
         requireActivity().actionBar?.setDisplayHomeAsUpEnabled(true)
 
         arguments?.run {
-            specId = getInt(event_id)
-            spectacleViewModel.getSpectacleDetails(getInt(event_id))
+            specId = getInt(BUNDlE_KEY_PERFORMANCE)
+            spectacleViewModel.getSpectacleDetails(getInt(BUNDlE_KEY_PERFORMANCE))
         }
         prepareViewPager()
 
@@ -77,8 +74,8 @@ class SpectacleFragment : Fragment(R.layout.fragment_spectacle_detail) {
     private fun handleContent(contentResultState: ContentResultState) =
         with(binding) {
             contentResultState.refreshPage(
-                viewToShow = contentDetailzz,
-                progressBar = progressBar6,
+                viewToShow = contentDetails,
+                progressBar = progressBar,
                 onStateSuccess = {
                     when (it) {
                         is Performance -> {

@@ -10,8 +10,8 @@ import com.example.theatre.core.presentation.ext.toListOfActorsInPerformance
 import com.example.theatre.core.presentation.model.ContentResultState
 import com.example.theatre.core.presentation.model.handleContents
 import com.example.theatre.databinding.FragmentPosterReviewBinding
+import com.example.theatre.features.Constants.BundleConstants.BUNDlE_KEY_POSTER
 import com.example.theatre.features.poster.domain.model.PosterDetails
-import com.example.theatre.features.poster.presentation.ui.detail.PosterFragment.Companion.poster_id
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
@@ -29,7 +29,7 @@ class PosterInfoFragment : Fragment(R.layout.fragment_poster_review) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        arguments?.run { viewModel.getPoster(getInt(poster_id)) }
+        arguments?.run { viewModel.getPoster(getInt(BUNDlE_KEY_POSTER)) }
 
         viewModel.posterDetailedLoaded.observe(viewLifecycleOwner, ::handlePosterDetails)
     }

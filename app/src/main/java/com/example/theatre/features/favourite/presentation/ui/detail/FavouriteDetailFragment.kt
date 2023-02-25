@@ -10,6 +10,7 @@ import com.example.theatre.core.presentation.ext.deleteHTML
 import com.example.theatre.core.presentation.model.ContentResultState
 import com.example.theatre.core.presentation.model.handleContents
 import com.example.theatre.databinding.FragmentDetailCommonArghBinding
+import com.example.theatre.features.Constants.BundleConstants.BUNDlE_KEY_FAVOURITE
 import com.example.theatre.features.spectacles.presentation.ui.detail.SpectacleViewModel
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
@@ -31,7 +32,7 @@ class FavouriteDetailFragment : Fragment(R.layout.fragment_detail_common_argh) {
         super.onViewCreated(view, savedInstanceState)
 
         arguments?.run {
-            favouriteViewModel.getFavouritesById(getInt(FavouriteFragment.fav_id))
+            favouriteViewModel.getFavouritesById(getInt(BUNDlE_KEY_FAVOURITE))
         }
 
         favouriteViewModel.favouriteContent.observe(viewLifecycleOwner, ::handleInfo)

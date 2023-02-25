@@ -6,12 +6,12 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.theatre.R
 import com.example.theatre.core.presentation.model.ContentResultState
 import com.example.theatre.core.presentation.model.refreshPage
 import com.example.theatre.databinding.FragmentTheatresBinding
+import com.example.theatre.features.Constants.BundleConstants.BUNDlE_KEY_THEATRE
 import com.example.theatre.features.info.domain.model.theatre.Theatre
 import com.example.theatre.features.info.presentation.adapters.TheatresListAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -24,17 +24,8 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class TheatresListFragment : Fragment(R.layout.fragment_theatres) {
 
-    companion object {
-        const val DESCRIPTION_TAB = 0
-        const val THEATRE = "Театр"
-        fun newInstance(): TheatresListFragment {
-            return TheatresListFragment()
-        }
-    }
-
     private val binding: FragmentTheatresBinding by viewBinding(FragmentTheatresBinding::bind)
     private lateinit var theatresAdapter: TheatresListAdapter
-    private lateinit var recyclerView: RecyclerView
     private val theatresListViewModel by viewModel<TheatresListViewModel>()
 
 
@@ -58,27 +49,22 @@ class TheatresListFragment : Fragment(R.layout.fragment_theatres) {
         theatresListViewModel.theatresContent.observe(viewLifecycleOwner, ::handleTheatres)
     }
 
-    private fun handleTheatres(contentResultState: ContentResultState) {
+    private fun handleTheatres(contentResultState: ContentResultState) = with(binding) {
         contentResultState.refreshPage(
-            viewToShow = binding?.listTheatre!!,
-            progressBar = binding?.progressBar5!!,
-
+            viewToShow = listTheatre,
+            progressBar = progressBar5,
             onStateSuccess = {
                 theatresAdapter.theatres = ((it as List<Theatre>).toMutableList())
-                binding.listTheatre.adapter = theatresAdapter
-            })
-
+            },
+            tryAgainAction = { tryAgain() },
+            errorLayout = errorLayout
+        )
     }
 
-    private fun tryAgain() {
-        binding?.errorLayout?.root?.visibility = View.INVISIBLE
+    private fun tryAgain() =
         theatresListViewModel.getTheatres()
-        initObservers()
-    }
 
-    private fun onTheatreClick(id: Int) {
-        val bundle = bundleOf("id" to id)
+    private fun onTheatreClick(id: Int) =
         requireActivity().findNavController(R.id.navHostFragment)
-            .navigate(R.id.action_info_to_theatreFragment, bundle)
-    }
+            .navigate(R.id.action_info_to_theatreFragment, bundleOf(BUNDlE_KEY_THEATRE to id))
 }

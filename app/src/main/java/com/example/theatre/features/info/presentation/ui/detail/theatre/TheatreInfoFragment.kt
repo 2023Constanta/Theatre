@@ -8,6 +8,7 @@ import com.example.theatre.R
 import com.example.theatre.core.presentation.model.ContentResultState
 import com.example.theatre.core.presentation.model.handleContents
 import com.example.theatre.databinding.FragmentInfoCommonArghBinding
+import com.example.theatre.features.Constants.BundleConstants.BUNDlE_KEY_THEATRE
 import com.example.theatre.features.info.domain.model.theatre.Theatre
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
@@ -19,22 +20,13 @@ import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class TheatreInfoFragment : Fragment(R.layout.fragment_info_common_argh) {
 
-    companion object {
-        const val DETAILS_TAB = 1
-        const val DETAILS = "Детали"
-        const val theatre_id = "id"
-        fun newInstance(): TheatreInfoFragment {
-            return TheatreInfoFragment()
-        }
-    }
-
     private val binding: FragmentInfoCommonArghBinding by viewBinding(FragmentInfoCommonArghBinding::bind)
     private val theatreViewModel by sharedViewModel<TheatreViewModel>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        arguments?.run { theatreViewModel.getTheatreById(getInt(theatre_id)) }
+        arguments?.run { theatreViewModel.getTheatreById(getInt(BUNDlE_KEY_THEATRE)) }
         theatreViewModel.theatreDetailsContent.observe(viewLifecycleOwner, ::handleContent)
     }
 
@@ -66,7 +58,6 @@ class TheatreInfoFragment : Fragment(R.layout.fragment_info_common_argh) {
             }
         }
     }
-
 
 }
 

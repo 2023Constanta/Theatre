@@ -14,6 +14,7 @@ import com.example.theatre.core.domain.model.common.performance.Performance
 import com.example.theatre.core.presentation.model.ContentResultState
 import com.example.theatre.core.presentation.model.refreshPage
 import com.example.theatre.databinding.FragmentSpectaclesBinding
+import com.example.theatre.features.Constants.BundleConstants.BUNDlE_KEY_PERFORMANCE
 import com.example.theatre.features.spectacles.presentation.adapters.EventListAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -74,20 +75,16 @@ class SpectaclesListFragment : Fragment(R.layout.fragment_spectacles) {
     }
 
     private fun handleSpectacles(contentResultState: ContentResultState) = with(binding) {
-
         contentResultState.refreshPage(
             onStateSuccess = {
                 Log.d("SpecList", "handleSpectacles: ${it as List<Performance>}")
                 performancesAdapter.spectacles = (it.toMutableList())
             },
-            tryAgainAction = {
-                tryAgain()
-            },
+            tryAgainAction = { tryAgain() },
             viewToShow = content,
-            progressBar = progressBar3,
+            progressBar = progressBar,
             errorLayout = errorLayout
         )
-
     }
 
     private fun tryAgain() {
@@ -96,5 +93,8 @@ class SpectaclesListFragment : Fragment(R.layout.fragment_spectacles) {
 
     private fun onSpectacleClick(id: Int) =
         requireActivity().findNavController(R.id.navHostFragment)
-            .navigate(R.id.action_performance_to_eventFragment, bundleOf("id" to id))
+            .navigate(
+                R.id.action_performance_to_eventFragment,
+                bundleOf(BUNDlE_KEY_PERFORMANCE to id)
+            )
 }

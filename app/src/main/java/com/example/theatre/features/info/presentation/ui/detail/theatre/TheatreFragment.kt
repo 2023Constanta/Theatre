@@ -14,6 +14,7 @@ import com.example.theatre.core.presentation.model.refreshPage
 import com.example.theatre.core.presentation.viewpager.NewPagerAdapter
 import com.example.theatre.core.presentation.viewpager.prepareAdapter
 import com.example.theatre.databinding.FragmentDetailCommonBinding
+import com.example.theatre.features.Constants.BundleConstants.BUNDlE_KEY_THEATRE
 import com.example.theatre.features.info.domain.model.theatre.Theatre
 import com.example.theatre.features.info.domain.model.theatre.TheatreLocation
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
@@ -26,10 +27,6 @@ import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class TheatreFragment : Fragment(R.layout.fragment_detail_common) {
 
-    companion object {
-        const val theatre_id = "id"
-    }
-
     private val binding: FragmentDetailCommonBinding by viewBinding(FragmentDetailCommonBinding::bind)
     private val theatreViewModel by sharedViewModel<TheatreViewModel>()
     private lateinit var adapter: NewPagerAdapter
@@ -39,7 +36,7 @@ class TheatreFragment : Fragment(R.layout.fragment_detail_common) {
         setHasOptionsMenu(true)
         requireActivity().actionBar?.setDisplayHomeAsUpEnabled(true)
 
-        arguments?.run { theatreViewModel.getTheatreById(getInt(theatre_id)) }
+        arguments?.run { theatreViewModel.getTheatreById(getInt(BUNDlE_KEY_THEATRE)) }
         prepareViewPager()
 
         theatreViewModel.theatreDetailsContent.observe(viewLifecycleOwner, ::handleContent)
@@ -59,19 +56,19 @@ class TheatreFragment : Fragment(R.layout.fragment_detail_common) {
         )
     }
 
-    private fun handleContent(contentResultState: ContentResultState) {
-
-        contentResultState.refreshPage(
-            viewToShow = binding.contentDetailzz,
-            progressBar = binding.progressBar6,
-            onStateSuccess = {
-                when (it) {
-                    is Theatre -> setDetails(it)
-                    is TheatreLocation -> setCity(it)
+    private fun handleContent(contentResultState: ContentResultState) =
+        with(binding) {
+            contentResultState.refreshPage(
+                viewToShow = contentDetails,
+                progressBar = progressBar,
+                onStateSuccess = {
+                    when (it) {
+                        is Theatre -> setDetails(it)
+                        is TheatreLocation -> setCity(it)
+                    }
                 }
-            }
-        )
-    }
+            )
+        }
 
     private fun setDetails(theatreDetails: Theatre) {
         with(binding.content) {

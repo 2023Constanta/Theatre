@@ -12,6 +12,7 @@ import com.example.theatre.core.domain.model.common.performance.Performance
 import com.example.theatre.core.presentation.model.ContentResultState
 import com.example.theatre.core.presentation.model.handleContents
 import com.example.theatre.databinding.FragmentFavoriteBinding
+import com.example.theatre.features.Constants.BundleConstants.BUNDlE_KEY_FAVOURITE
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 /**
@@ -53,7 +54,7 @@ class FavoritesListFragment : Fragment(R.layout.fragment_favorite) {
         })
 
     private fun onFavClick(id: Int) = findNavController().navigate(
-        R.id.action_favourite_to_favouriteFragment, bundleOf("fav_id" to id)
+        R.id.action_favourite_to_favouriteFragment, bundleOf(BUNDlE_KEY_FAVOURITE to id)
     )
 
 }
