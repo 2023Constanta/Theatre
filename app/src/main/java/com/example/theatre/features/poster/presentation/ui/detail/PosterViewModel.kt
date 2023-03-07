@@ -11,7 +11,7 @@ import com.example.theatre.features.poster.domain.usecases.GetPosterUseCase
  * @author Tamerlan Mamukhov
  * @created 2022-08-27
  */
-class PosterDetailsViewModel(
+class PosterViewModel(
     private val getPosterUseCase: GetPosterUseCase
 ) : ViewModel() {
     private val _posterDetailedLoaded = MutableLiveData<ContentResultState>()

@@ -18,9 +18,26 @@ class SpectaclesListViewModel(
     private val _spectacleLoaded = MutableLiveData<ContentResultState>(ContentResultState.Loading)
     val spectacleLoaded get() = _spectacleLoaded
 
-    fun init() = viewModelCall(
+    private var _spectacleSearched = MutableLiveData<ContentResultState>(ContentResultState.Loading)
+    val spectacleSearched get() = _spectacleSearched
+
+    fun loadPerformances() {
+        if (_spectacleLoaded.value is ContentResultState.Loading) {
+            getPerformances()
+        }
+    }
+
+    fun getPerformances() = viewModelCall(
         call = { getPerformanceUseCase.getPerformance() },
         contentResultState = _spectacleLoaded
     )
+
+    fun getPerformancesByQuery(query: String) {
+        val fullQuery = SearchQueryConstructor.create(query)
+        viewModelCall(
+            call = { getPerformanceUseCase.getPerformancesByQuery(fullQuery) },
+            contentResultState = _spectacleSearched
+        )
+    }
 
 }

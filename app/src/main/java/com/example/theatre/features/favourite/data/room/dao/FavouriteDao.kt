@@ -1,19 +1,19 @@
 package com.example.theatre.features.favourite.data.room.dao
 
 import androidx.room.*
-import com.example.theatre.features.favourite.data.room.entity.FavouriteEntity
+import com.example.theatre.features.favourite.data.room.entity.FavouritePerformanceEntity
 
 @Dao
 interface FavouriteDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun save(fav: FavouriteEntity)
+    suspend fun save(fav: FavouritePerformanceEntity)
 
     @Query("SELECT * FROM favourites")
-    fun getAll(): List<FavouriteEntity>
+    fun getAll(): List<FavouritePerformanceEntity>
 
     @Query("SELECT * FROM favourites WHERE id = :id")
-    suspend fun getBy(id: Int): FavouriteEntity
+    suspend fun getBy(id: Int): FavouritePerformanceEntity
 
     @Delete()
-    fun delete(fav: FavouriteEntity)
+    fun delete(fav: FavouritePerformanceEntity)
 }

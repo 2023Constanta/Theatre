@@ -6,10 +6,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.theatre.R
+import com.example.theatre.core.domain.model.common.agent.Agent
 import com.example.theatre.core.presentation.ext.EMPTY
 import com.example.theatre.core.presentation.ext.deleteHTML
 import com.example.theatre.databinding.ItemPersonBinding
-import com.example.theatre.core.domain.model.common.agent.Agent
 
 /**
  * Адаптер для списка актеров
@@ -21,9 +21,14 @@ import com.example.theatre.core.domain.model.common.agent.Agent
  */
 
 class PersonsListAdapter(
-    private val persons: MutableList<Agent>,
     private val onItemClicked: (id: Int) -> Unit,
 ) : RecyclerView.Adapter<PersonsListAdapter.ViewHolder>() {
+
+    var persons: MutableList<Agent> = mutableListOf()
+        set(value) {
+            field.clear()
+            field.addAll(value)
+        }
 
     class ViewHolder(val binding: ItemPersonBinding) :
         RecyclerView.ViewHolder(binding.root)
@@ -59,11 +64,4 @@ class PersonsListAdapter(
 
     override fun getItemCount(): Int = persons.size
 
-    fun setPersons(personList: List<Agent>) {
-        if (personList.isNotEmpty()) {
-            persons.clear()
-            persons.addAll(personList)
-            notifyDataSetChanged()
-        }
-    }
 }

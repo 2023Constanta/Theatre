@@ -19,6 +19,9 @@ class GetPerformanceUseCase(private val performanceRepository: PerformanceReposi
     suspend fun getPerformance(): ResultState<List<Performance>> =
         safeCall { performanceRepository.getPerformances() }
 
+    suspend fun getPerformancesByQuery(query: String): ResultState<List<Performance>> =
+        safeCall { performanceRepository.getPerformancesByQuery(query) }
+
     suspend fun getPerformanceById(id: Int): ResultState<Performance> =
         safeCall { performanceRepository.getPerformanceById(id) }
 

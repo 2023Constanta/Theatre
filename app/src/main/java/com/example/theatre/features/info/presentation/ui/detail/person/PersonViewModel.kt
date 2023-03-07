@@ -12,7 +12,7 @@ import com.example.theatre.features.info.domain.usecases.GetPersonUseCase
  * @author Tamerlan Mamukhov
  */
 
-class PersonDetailViewModel(
+class PersonViewModel(
     private val getPersonUseCase: GetPersonUseCase
 ) : ViewModel() {
     private val _personDetailsMutableLiveData = MutableLiveData<ContentResultState>()

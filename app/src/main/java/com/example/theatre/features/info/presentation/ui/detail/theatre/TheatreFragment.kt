@@ -1,22 +1,22 @@
 package com.example.theatre.features.info.presentation.ui.detail.theatre
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
+import by.kirich1409.viewbindingdelegate.viewBinding
 import com.bumptech.glide.Glide
 import com.example.theatre.R
 import com.example.theatre.core.presentation.ext.EMPTY
 import com.example.theatre.core.presentation.model.ContentResultState
-import com.example.theatre.core.presentation.model.handleContents
 import com.example.theatre.core.presentation.model.refreshPage
-import com.example.theatre.databinding.FragmentEventBinding
+import com.example.theatre.core.presentation.viewpager.NewPagerAdapter
+import com.example.theatre.core.presentation.viewpager.prepareAdapter
+import com.example.theatre.databinding.FragmentDetailCommonBinding
+import com.example.theatre.features.Constants.BundleConstants.BUNDlE_KEY_THEATRE
 import com.example.theatre.features.info.domain.model.theatre.Theatre
 import com.example.theatre.features.info.domain.model.theatre.TheatreLocation
-import com.example.theatre.features.info.presentation.adapters.TheatrePagerAdapter
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 /**
@@ -25,55 +25,50 @@ import org.koin.androidx.viewmodel.ext.android.sharedViewModel
  * @author Tamerlan Mamukhov
  */
 
-class TheatreFragment : Fragment() {
+class TheatreFragment : Fragment(R.layout.fragment_detail_common) {
 
-    companion object {
-        const val theatre_id = "id"
-    }
-
-    lateinit var binding: FragmentEventBinding
-    private val theatreViewModel by sharedViewModel<TheatreDetailViewModel>()
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View {
-        setHasOptionsMenu(true)
-        requireActivity().actionBar?.setDisplayHomeAsUpEnabled(true)
-        return inflater.inflate(R.layout.fragment_event, container, false)
-    }
+    private val binding: FragmentDetailCommonBinding by viewBinding(FragmentDetailCommonBinding::bind)
+    private val theatreViewModel by sharedViewModel<TheatreViewModel>()
+    private lateinit var adapter: NewPagerAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setHasOptionsMenu(true)
+        requireActivity().actionBar?.setDisplayHomeAsUpEnabled(true)
 
-        binding = FragmentEventBinding.bind(view)
-
-        val viewPager = binding.content.viewPager
-        viewPager.adapter = TheatrePagerAdapter(requireActivity().supportFragmentManager)
-
-        val tabLayout = binding.content.tabs
-        tabLayout.setupWithViewPager(viewPager)
-
-        arguments?.run { theatreViewModel.getTheatreById(getInt(theatre_id)) }
+        arguments?.run { theatreViewModel.getTheatreById(getInt(BUNDlE_KEY_THEATRE)) }
+        prepareViewPager()
 
         theatreViewModel.theatreDetailsContent.observe(viewLifecycleOwner, ::handleContent)
         theatreViewModel.cityContent.observe(viewLifecycleOwner, ::handleContent)
     }
 
-    private fun handleContent(contentResultState: ContentResultState) {
 
-        contentResultState.refreshPage(
-            viewToShow = binding.contentDetailzz,
-            progressBar = binding.progressBar6,
-            onStateSuccess = {
-                when (it) {
-                    is Theatre -> setDetails(it)
-                    is TheatreLocation -> setCity(it)
-                }
-            }
+    private fun prepareViewPager() = with(binding.content) {
+        adapter = NewPagerAdapter(
+            fragments = listOf(TheatreDetailFragment(), TheatreInfoFragment()),
+            fragmentManager = requireActivity().supportFragmentManager,
+            lifecycle = lifecycle
+        )
+        adapter.prepareAdapter(
+            tabs, viewPager,
+            resources.getStringArray(R.array.details_info).toList()
         )
     }
+
+    private fun handleContent(contentResultState: ContentResultState) =
+        with(binding) {
+            contentResultState.refreshPage(
+                viewToShow = contentDetails,
+                progressBar = progressBar,
+                onStateSuccess = {
+                    when (it) {
+                        is Theatre -> setDetails(it)
+                        is TheatreLocation -> setCity(it)
+                    }
+                }
+            )
+        }
 
     private fun setDetails(theatreDetails: Theatre) {
         with(binding.content) {

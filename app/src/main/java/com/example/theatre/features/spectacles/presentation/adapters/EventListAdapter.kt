@@ -20,12 +20,16 @@ import com.example.theatre.databinding.ItemSpectacleBinding
  */
 
 class EventListAdapter(
-    private val spectacles: MutableList<Performance>,
-    private val onItemClicked: (id: Int) -> Unit,
+    private val onItemClicked: (id: Int) -> Unit
 ) : RecyclerView.Adapter<EventListAdapter.ViewHolder>() {
 
-    class ViewHolder(val binding: ItemSpectacleBinding) :
-        RecyclerView.ViewHolder(binding.root)
+    var spectacles: MutableList<Performance> = mutableListOf()
+        set(value) {
+            field.clear()
+            field.addAll(value)
+            notifyDataSetChanged()
+        }
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
         ViewHolder(
@@ -63,11 +67,6 @@ class EventListAdapter(
 
     override fun getItemCount(): Int = spectacles.size
 
-    fun setSpectacles(spectacleList: List<Performance>) {
-        if (spectacleList.isNotEmpty()) {
-            spectacles.clear()
-            spectacles.addAll(spectacleList)
-            notifyDataSetChanged()
-        }
-    }
+    class ViewHolder(val binding: ItemSpectacleBinding) :
+        RecyclerView.ViewHolder(binding.root)
 }

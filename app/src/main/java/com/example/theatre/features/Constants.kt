@@ -1,7 +1,7 @@
 package com.example.theatre.features
 
 object Constants {
-    const val BASE_URL = "https://kudago.com/public-api/v1.3/"
+    const val BASE_URL = "https://kudago.com/public-api/v1.4/"
     const val ID = "id"
     const val PUBLICATION_DATE = "publication_date"
     const val DATES = "dates"
@@ -38,4 +38,13 @@ object Constants {
     const val IS_CLOSED = "is_closed"
     const val PLACE_ID = "place_id"
     const val AGENT_ID = "agent_id"
+    const val QUERY = "q"
+
+    object BundleConstants {
+        const val BUNDlE_KEY_PERFORMANCE = "perf_id"
+        const val BUNDlE_KEY_FAVOURITE = "fav_id"
+        const val BUNDlE_KEY_PERSON = "person_id"
+        const val BUNDlE_KEY_THEATRE = "theatre_id"
+        const val BUNDlE_KEY_POSTER = "poster_id"
+    }
 }
